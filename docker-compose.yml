@@ -1,7 +1,8 @@
 version: '3.6'
 services:
   telegraf:
-    image: telegraf:1.18-alpine
+    image: telegraf:1.19-alpine
+    env_file: configuration.env
     volumes:
     - ./telegraf/etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     depends_on:
@@ -17,11 +18,12 @@ services:
     ports:
       - '127.0.0.1:8086:8086'
     volumes:
+      - ./config.yml:/etc/influxdb2/config.yml
       - ./:/imports
       - influxdb_data:/var/lib/influxdb
 
   grafana:
-    image: grafana/grafana:8.0.2
+    image: grafana/grafana:8.0.7
     depends_on:
       - influxdb
     env_file: configuration.env
